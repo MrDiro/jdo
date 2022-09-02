@@ -1,5 +1,5 @@
 /**
- * jdo Version: 1.0.0.6
+ * jdo Version: 1.0.0.7
  * libreria para operar con los elementos del documento
  * @param {*} arg recibe clase, id, elemento ó fragmento a crear
  * @author Dairo Carrasquilla (c) 2022
