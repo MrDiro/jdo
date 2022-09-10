@@ -1,10 +1,10 @@
 /**
- * jdo Version: 1.0.0.7
+ * jdo Version: 1.0.0.8
  * libreria para operar con los elementos del documento
  * @param {*} arg recibe clase, id, elemento ó fragmento a crear
  * @author Dairo Carrasquilla (c) 2022
  */
-function jdo(arg) {
+ function jdo(arg) {
 
     return new class {
 
@@ -141,6 +141,16 @@ function jdo(arg) {
     
         addAtt(arg) {
     
+            if (typeof arg == "string") {
+
+                this.__element__.setAttribute(arg, "");
+                return this;
+            }
+            else if (arg == null) {
+
+                return this;
+            }
+
             for (let att in arg) {
     
                 this.__element__.setAttribute(att, arg[att]);
