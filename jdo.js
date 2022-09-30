@@ -1,10 +1,14 @@
 /**
- * jdo Version: 1.0.0.8
+ * Esta obra está licenciada bajo la Licencia Creative Commons Atribución 4.0 Internacional. 
+ * Para ver una copia de esta licencia, visite http://creativecommons.org/licenses/by/4.0/ 
+ * o envíe una carta a Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
  * libreria para operar con los elementos del documento
- * @param {*} arg recibe clase, id, elemento ó fragmento a crear
- * @author Dairo Carrasquilla (c) 2022
+ * @version 1.0.0.9
+ * @product jdo
+ * @param {*} arg recibe una clase, id, elemento a buscar ó fragmento a elemento crear
+ * @author Dairo Carrasquilla (cc) 2022
  */
- function jdo(arg) {
+function jdo(arg) {
 
     return new class {
 
@@ -57,17 +61,31 @@
                 console.error("[-] Elemento no encontrado:", err);
             }
         }
-    
+
+    	/**
+		* Obtiene el elemento padre del elemento actual
+		* @returns jdo
+		*/
         father() {
     
             return jdo(this.__element__.parentElement);
         }
     
+		/**
+		* Obtiene el elemento hermando del elemento actual
+		* se puede indicar el hermano siguiente con next o anterior con preview
+		* @param {*} order next ó preview
+		* @returns jdo
+		*/
         brother(order = "next") {
     
             return (order == "next") ? jdo(this.__element__.nextElementSibling) : jdo(this.__element__.previousElementSibling);
         }
-    
+   
+		/**
+		* Verifica si el elemento a buscar existe o no en el DOM
+		* @returns  false ó true
+		*/
         exists() {
     
             if (this.__element__ == null) {
@@ -80,6 +98,11 @@
             }
         }
     
+		/**
+		* Obtiene o establece un valor del elemento actual en el DOM
+		* @param  {...any} arg recibe dos valores para los elementos tipo option y uno para los demas tipos de elementos
+		* @returns jdo
+		*/
         value(...arg) {
     
             if (arg.length == 0) {
@@ -132,6 +155,10 @@
             }
         }
     
+		/**
+		 * Seleccciona el texto en cuadro de un elemento tipo Select
+		 * @returns string
+		 */
         textSelected() {
     
             let text = String(this.__element__.options[this.__element__.selectedIndex].text);
@@ -139,6 +166,11 @@
             return text;
         }
     
+		/**
+		 * Agrega atributos a el elemento actual
+		 * @param {*} arg recibe un objecto clave:valor con los atributos
+		 * @returns jdo
+		 */
         addAtt(arg) {
     
             if (typeof arg == "string") {
@@ -159,11 +191,21 @@
             return this;
         }
     
+		/**
+		 * Obtiene los atributos del elemenot actual
+		 * @param {*} arg retorna un string
+		 * @returns string
+		 */
         getAtt(arg) {
     
             return this.__element__.getAttribute(arg);
         }
     
+		/**
+		 * remueve un atributo en el elemento actual
+		 * @param {*} arg recibe el nombre del atributo
+		 * @returns jdo
+		 */
         rmAtt(arg) {
     
             if (this.__element__.hasAttribute(arg)) {
@@ -174,6 +216,11 @@
             return this;
         }
     
+		/**
+		 * Agrega uno o varios elementos al elemento atual
+		 * @param  {...any} arg recibe un array de elementos jdo
+		 * @returns jdo
+		 */
         add(...arg) {
     
             arg.forEach((item) => {
@@ -184,6 +231,11 @@
             return this;
         }
     
+		/**
+		 * Elimina uno ó varios elementos que estén dentro del elemento actual.
+		 * @param  {...any} arg recibe como argumento un array de elementos jdo
+		 * @returns jdo
+		 */
         delete(...arg) {
     
             arg.forEach((item) => {
@@ -194,6 +246,11 @@
             return this;
         }
     
+		/**
+		 * Agrega una clase de estilos css al elemento actual
+		 * @param  {...any} arg recibe como argumento un array con los nombres de las clases
+		 * @returns jdo
+		 */
         addClass(...arg) {
     
             this.__element__.classList.add(...arg);
@@ -201,6 +258,11 @@
             return this;
         }
     
+		/**
+		 * Remueve las clases que se le indiquen en el elemento actual
+		 * @param  {...any} arg recibe como argumento un arraya con los nombres de las clases
+		 * @returns jdo
+		 */
         rmClass(...arg) {
     
             arg.forEach((item) => {
@@ -214,6 +276,11 @@
             return this;
         }
     
+		/**
+		 * Establece los estilos css a un elemnto
+		 * @param {*} arg recibe como argumento un ojecto clave:valor con los estilos css
+		 * @returns jdo
+		 */
         styles(arg) {
 
             if (typeof arg == "string") {
@@ -229,6 +296,10 @@
             return this;
         }
     
+		/**
+		 * Limpia texto o valor de el elemto actual
+		 * @returns jdo
+		 */
         empty() {
     
             if (this.getType() == "INPUT") {
@@ -247,6 +318,10 @@
             return this;
         }
     
+		/**
+		 * Borra el contenido del elemnto actual. como texo, valores o elementos dentro del elemento actual
+		 * @returns jdo
+		 */
         clear() {
     
             this.__element__.innerHTML = "";
@@ -254,6 +329,12 @@
             return this;
         }
     
+		/**
+		 * Establece un evento al elemento actual
+		 * @param {*} tp tipo de evento; ejemplo. click, change, mousedom, keyup ...
+		 * @param {*} callback funcion que se desencadena cuando se dispara el evento
+		 * @returns jdo
+		 */
         event(tp, callback) {
     
             this.__element__.addEventListener(tp, callback);
@@ -261,6 +342,12 @@
             return this;
         }
     
+		/**
+		 * Destruye el evento relacionado con el elemento actual
+		 * @param {*} tp tipo de evento establecido al elemento
+		 * @param {*} callback funcion establecida al evento
+		 * @returns jdo
+		 */
         destroyEvent(tp, callback) {
     
             this.__element__.removeEventListener(tp, callback);
@@ -273,6 +360,12 @@
             return this.__element__;
         }
     
+		/**
+		 * Obtiene los elementos hijos del elemento actual, si no recibe argumento la funcion, esta devuelve
+		 * todos los elementos hijos
+		 * @param {*} arg recibe la posicion del elemento hijo comenzando desde el 1 ... N.
+		 * @returns Array de jdo o un hijo jdo
+		 */
         children(arg = null) {
     
             let ch = this.__element__.children;
@@ -299,11 +392,19 @@
             }
         }
     
+		/**
+		 * Devuelve el tipo del elemto actual, ej: H1, P, A, INPUT...
+		 * @returns String
+		 */
         getType() {
     
             return String(this.__element__.tagName);
         }
     
+		/**
+		 * Desencadena el evento click
+		 * @returns jdo
+		 */
         click() {
     
             this.__element__.click();
@@ -311,20 +412,33 @@
             return this;
         }
     
+		/**
+		 * Oculta el elemnto acual
+		 * @returns jdo
+		 */
         hide() {
     
-            this.__element__.style.display = "none";
+            this.__element__.classList.add("hidden");
     
             return this;
         }
     
+		/**
+		 * Muestra al elemento actual si está oculto
+		 * @returns jdo
+		 */
         show() {
     
-            this.__element__.style.removeProperty("display");
+            this.__element__.classList.remove("hidden");
     
             return this;
         }
     
+		/**
+		 * Establece o devuelve el contenido del elemnto, en formato html o texto
+		 * @param {*} arg recibe un string
+		 * @returns jdo o node del contendio
+		 */
         html(arg) {
     
             if (typeof arg == "undefined") {
@@ -345,6 +459,11 @@
             }
         }
     
+		/**
+		 * Establece propiedades del objecto html.
+		 * @param {*} props Recibe objecto clave:valor
+		 * @returns 
+		 */
         setProps(props) {
     
             for (let prop in props) {
@@ -355,11 +474,23 @@
             return this;
         }
     
+		/**
+		 * Obtiene la propiedad del elemento actual
+		 * @param {*} prop recibe el valor de la propiedad indicada
+		 * @returns string
+		 */
         getProp(prop) {
     
             return this.__element__[prop];
         }
     
+		/**
+		 * Peticion XMLHTTPRequest post.
+		 * @param {*} url string del url de la petición
+		 * @param {*} data objecto clave:valor de los datos a enviar
+		 * @param {*} callback funcion que se ejecuta cuando la peticion recibida
+		 * @returns respuesta XMLHTTPRequest
+		 */
         post(url = "", data = null, callback = null) {
     
             let response = new Promise((resolve, reject) => {
@@ -389,6 +520,13 @@
             }
         }
     
+		/**
+		 * Petición XMLHTTPRequest get.
+		 * @param {*} url string url de la petición
+		 * @param {*} data objecto clave:valor de los datos a enviar
+		 * @param {*} callback funcion que se ejecuta al recibir la petición
+		 * @returns respuesta XMLHTTPRequest
+		 */
         get(url = "", data = null, callback = null) {
     
             let response = new Promise((resolve, reject) => {
